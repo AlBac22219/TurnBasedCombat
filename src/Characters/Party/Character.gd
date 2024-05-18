@@ -3,6 +3,7 @@ extends Marker3D
 class_name PartyCharacter
 
 signal complete_turn
+signal change_state(state: buttons_states)
 
 @export var mesh: MeshInstance3D
 @export var playerController: CanvasLayer
@@ -11,6 +12,10 @@ signal complete_turn
 @export var camera_marker: Marker3D
 @export var skill_textures: Skill_textures
 @export var character_stat: character_stats
+
+enum buttons_states {ATACK, SKILL, ULT, NULL}
+
+var last_button: buttons_states = buttons_states.NULL
 var selected_enemy: Monster = null
 var selected_enemy_arr: Array[Monster] = []
 var can_fight: bool = false
@@ -29,6 +34,7 @@ func init(position_marker: Marker3D):
 
 func select(camera: Camera3D):
 	can_fight = true
+	last_button = buttons_states.NULL
 	_update_buffs()
 	var mesh_material: ShaderMaterial = mesh.get_surface_override_material(0)
 	mesh_material.set_shader_parameter("IsSelectd", true)
@@ -36,23 +42,24 @@ func select(camera: Camera3D):
 	camera.global_position = camera_marker.global_position
 
 func finished_turn():
+	last_button = buttons_states.NULL
 	can_fight = false
 	playerController.visible = false
 	var mesh_material: ShaderMaterial = mesh.get_surface_override_material(0)
 	mesh_material.set_shader_parameter("IsSelectd", false)
 
 func _atack_enemy(damage: float):
-	randomize()
-	var final_damage: float = _final_damage_formula(damage)
-	var final_crit_rate: float = _final_crit_rate()
-	var final_crit_damage: float = _final_crit_damage()
-	if selected_enemy_arr.size() > 0:
-		for i in selected_enemy_arr:
-			if randf_range(0, 1) <= final_crit_rate:
-				i.attacked(final_damage * final_crit_damage)
-			else:
-				i.attacked(final_damage)
-		selected_enemy_arr = []
+		randomize()
+		var final_damage: float = _final_damage_formula(damage)
+		var final_crit_rate: float = _final_crit_rate()
+		var final_crit_damage: float = _final_crit_damage()
+		if selected_enemy_arr.size() > 0:
+			for i in selected_enemy_arr:
+				if randf_range(0, 1) <= final_crit_rate:
+					i.attacked(final_damage * final_crit_damage)
+				else:
+					i.attacked(final_damage)
+			selected_enemy_arr = []
 
 func _final_damage_formula(damage: float) -> float:
 	var final_damage: float = damage
@@ -79,23 +86,35 @@ func _final_crit_damage():
 	return (crit_damage/100) + 1.0
 
 func _on_character_controller_attack():
-	_atack_enemy(character_stat.attack_damage)
-	change_energy(character_stat.attack_energy)
-	finished_turn()
-	complete_turn.emit()
+	if last_button == buttons_states.ATACK:
+		_atack_enemy(character_stat.attack_damage)
+		change_energy(character_stat.attack_energy)
+		finished_turn()
+		complete_turn.emit()
+	else : 
+		last_button = buttons_states.ATACK
+		emit_signal("change_state", buttons_states.ATACK)
 
 func _on_character_controller_skill():
-	_atack_enemy(character_stat.skill_damage)
-	change_energy(character_stat.skill_energy)
-	finished_turn()
-	complete_turn.emit()
+	if last_button == buttons_states.SKILL:
+		_atack_enemy(character_stat.skill_damage)
+		change_energy(character_stat.skill_energy)
+		finished_turn()
+		complete_turn.emit()
+	else : 
+		last_button = buttons_states.SKILL
+		emit_signal("change_state", buttons_states.SKILL)
 
 func _on_character_controller_ultimate():
-	_atack_enemy(character_stat.ult_damage)
-	character_controller.set_energy(0)
-	ultimate_energy = 0
-	finished_turn()
-	complete_turn.emit()
+	if last_button == buttons_states.ULT:
+		_atack_enemy(character_stat.ult_damage)
+		character_controller.set_energy(0)
+		ultimate_energy = 0
+		finished_turn()
+		complete_turn.emit()
+	else:
+		last_button = buttons_states.SKILL
+		emit_signal("change_state", buttons_states.SKILL)
 
 func change_energy(how_much_add: float):
 	character_controller.add_energy(how_much_add)

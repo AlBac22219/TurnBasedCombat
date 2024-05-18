@@ -11,7 +11,7 @@
 [sub_resource type="PlaneMesh" id="PlaneMesh_74ydg"]
 size = Vector2(20, 20)
 
-[node name="CombatScene" type="Node3D" node_paths=PackedStringArray("level_floor", "partyNode", "monstersNode", "partySpawnMarkers", "monstersSpawnMarkers", "battle_queue_ui", "selected_enemy_ui", "camera", "selection_manager")]
+[node name="CombatScene" type="Node3D" node_paths=PackedStringArray("level_floor", "partyNode", "monstersNode", "partySpawnMarkers", "monstersSpawnMarkers", "battle_queue_ui", "camera", "selection_manager")]
 script = ExtResource("1_ubp24")
 test_party = Array[PackedScene]([ExtResource("2_1kokq"), ExtResource("2_1kokq"), ExtResource("2_1kokq")])
 test_monsters = Array[PackedScene]([ExtResource("3_pnls4"), ExtResource("3_pnls4"), ExtResource("3_pnls4"), ExtResource("3_pnls4"), ExtResource("3_pnls4")])
@@ -21,7 +21,6 @@ monstersNode = NodePath("Monsters")
 partySpawnMarkers = NodePath("PartySpawn")
 monstersSpawnMarkers = NodePath("MonstersSpawn")
 battle_queue_ui = NodePath("Battle_queue_layer/Battle_queue")
-selected_enemy_ui = NodePath("Battle_queue_layer/Selected_enemy_ui")
 camera = NodePath("Camera3D")
 selection_manager = NodePath("Selectons")
 
@@ -77,13 +76,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.1238, 0, -1.32125)
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
 transform = Transform3D(1, 0, 0, 0, 0.481616, 0.876382, 0, -0.876382, 0.481616, 0, 4.78249, 1.51666)
 
-[node name="Selectons" type="Node3D" parent="." node_paths=PackedStringArray("monstersSpawnNode", "one_selection", "three_selection", "all_selection", "monstersNode")]
+[node name="Selectons" type="Node3D" parent="." node_paths=PackedStringArray("monstersSpawnNode", "monstersNode", "one_selection", "three_selection", "all_selection", "selected_enemy_ui")]
 script = ExtResource("7_h8i5x")
 monstersSpawnNode = NodePath("../MonstersSpawn")
+monstersNode = NodePath("../Monsters")
 one_selection = NodePath("One_select")
 three_selection = NodePath("Three_select")
 all_selection = NodePath("All_select")
-monstersNode = NodePath("../Monsters")
+selected_enemy_ui = NodePath("../Battle_queue_layer/Selected_enemy_ui")
 
 [node name="One_select" type="Node3D" parent="Selectons"]
 

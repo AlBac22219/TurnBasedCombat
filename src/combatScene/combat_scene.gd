@@ -16,7 +16,6 @@ signal victory
 @export_category("UI")
 @export_subgroup("UI")
 @export var battle_queue_ui: Control
-@export var selected_enemy_ui: Control
 @export var camera: Camera3D
 @export_category("Selection_node")
 @export_subgroup("Selection_node")
@@ -40,6 +39,7 @@ func init(party: Array[PackedScene], monsters: Array[PackedScene]):
 			var player_character = party[i]
 			var character = player_character.instantiate()
 			character.init(party_spawn_markers[i])
+			character.connect("change_state", _change_selection_mode)
 			partyNode.add_child(character)
 	if monsters.size()>0:
 		for i in range(monsters.size()):
@@ -97,15 +97,18 @@ func select_active_char():
 			monstersSpawnMarkers.global_position.x = queue_keys[-1].global_position.x
 			selected_char = queue_keys[-1]
 			selection_manager.get_selected_enemies()
-			selected_enemy_ui.set_selected(selected_char.selected_enemy_arr[0])
-			selected_enemy_ui.visible = true
+			selection_manager.change_ui_visibiliti(true)
+			_change_selection_mode(selected_char.last_button)
+			#selected_enemy_ui.set_selected(selected_char.selected_enemy_arr[0])
+			#selected_enemy_ui.visible = true
 			player_turn = true
 		else :
 			monstersNode.global_position.x = 0
 			level_floor.global_position.x = 0
 			monstersSpawnMarkers.global_position.x = 0
 			player_turn = false
-			selected_enemy_ui.visible = false
+			selection_manager.change_ui_visibiliti(false)
+			#selected_enemy_ui.visible = false
 		selection_manager.update()
 		queue_keys[-1].select(camera)
 		await queue_keys[-1].complete_turn
@@ -144,6 +147,8 @@ func reposition_enemies():
 		monstersNode.get_child(i).init(monstersSpawnMarkers.get_child(i))
 
 func _on_selectons_change_selected_enemies(monsters_array: Array[Monster]):
-	selected_char.selected_enemy_arr = monsters_array
-	if monsters_array.size() == 1:
-		selected_enemy_ui.set_selected(monsters_array[0])
+	if selected_char:
+		selected_char.selected_enemy_arr = monsters_array
+
+func _change_selection_mode(mode: PartyCharacter.buttons_states):
+	selection_manager.change_selection_mode(mode)

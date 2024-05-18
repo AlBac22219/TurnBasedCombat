@@ -9,12 +9,16 @@ extends Control
 
 func set_selected(enemy: Monster):
 	clear_all()
-	enemy_icon.texture = enemy.iconTexture
-	enemy_hp_bar.max_value = enemy.character_stat.max_hp
-	max_hp_label.text = str(enemy.character_stat.max_hp)
-	enemy_hp_bar.value = enemy.hp
-	hp_label.text = str(enemy.hp)
-	enemy_name_label.text = enemy.character_stat.character_name
+	if enemy:
+		visible = true
+		enemy_icon.texture = enemy.iconTexture
+		enemy_hp_bar.max_value = enemy.character_stat.max_hp
+		max_hp_label.text = str(enemy.character_stat.max_hp)
+		enemy_hp_bar.value = enemy.hp
+		hp_label.text = str(enemy.hp)
+		enemy_name_label.text = enemy.character_stat.character_name
+	else :
+		visible = false
 
 func clear_all():
 	enemy_icon.texture = null

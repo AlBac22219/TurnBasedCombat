@@ -1,16 +1,20 @@
 extends Node3D
 
 signal change_selected_enemies(monsters_arra: Array[Monster])
-
+@export_category("monsters_nodes")
 @export var monstersSpawnNode: Node3D
+@export var monstersNode: Node3D
+@export_category("Selections_node")
 @export var one_selection: Node3D
 @export var three_selection: Node3D
 @export var all_selection: Node3D
-@export var monstersNode: Node3D
+@export_category("UI")
+@export var selected_enemy_ui: Control
 
-enum selections_modes{ONE, THREE, ALL}
 
-var selection_mode: selections_modes = selections_modes.ALL
+enum selections_modes{ONE, THREE, ALL, NULL}
+
+var selection_mode: selections_modes = selections_modes.ONE
 var player_turn: bool = true
 var selected_enemy:int = 0
 
@@ -56,6 +60,11 @@ func _move_to(to: Marker3D):
 					all_selection.get_child(i).move_to(monstersSpawnNode.get_child(i))
 				else:
 					all_selection.get_child(i).visible = false
+		selections_modes.NULL:
+			three_selection.visible = false
+			all_selection.visible = false
+			one_selection.visible = false
+	_update_ui()
 
 func _search_marker_id(to: Marker3D) -> int:
 	var i: int = 0
@@ -91,6 +100,7 @@ func _unhandled_input(event):
 				else:
 					selected_enemy = monstersNode.get_child_count() - 1
 				_move_to(monstersSpawnNode.get_child(selected_enemy))
+		get_selected_enemies()
 
 func _get_monsters_neiborhood() -> Array[int]:
 	var left: int = selected_enemy - 1
@@ -102,6 +112,14 @@ func _get_monsters_neiborhood() -> Array[int]:
 	if right < monstersNode.get_child_count():
 		result.append(right)
 	return result
+
+func _update_ui():
+	match selection_mode:
+		selections_modes.ONE:
+			selected_enemy_ui.visible = true
+			selected_enemy_ui.set_selected(monstersNode.get_child(selected_enemy))
+		_:
+			selected_enemy_ui.visible = false
 
 func get_selected_enemies():
 	var result: Array[Monster] = []
@@ -124,3 +142,19 @@ func monster_died():
 
 func update():
 	_move_to(monstersSpawnNode.get_child(selected_enemy))
+
+func change_ui_visibiliti(visibility: bool):
+	selected_enemy_ui.visible = visibility
+
+func change_selection_mode(mode: PartyCharacter.buttons_states):
+	match mode:
+		PartyCharacter.buttons_states.ATACK:
+			selection_mode = selections_modes.ONE
+		PartyCharacter.buttons_states.SKILL:
+			selection_mode = selections_modes.THREE
+		PartyCharacter.buttons_states.ULT:
+			selection_mode = selections_modes.ALL
+		PartyCharacter.buttons_states.NULL:
+			selection_mode = selections_modes.NULL
+	update()
+	get_selected_enemies()
