@@ -11,10 +11,10 @@
 [sub_resource type="PlaneMesh" id="PlaneMesh_74ydg"]
 size = Vector2(20, 20)
 
-[node name="CombatScene" type="Node3D" node_paths=PackedStringArray("level_floor", "partyNode", "monstersNode", "partySpawnMarkers", "monstersSpawnMarkers", "battle_queue_ui", "selected_enemy_ui", "camera", "selection_node", "selection_manager")]
+[node name="CombatScene" type="Node3D" node_paths=PackedStringArray("level_floor", "partyNode", "monstersNode", "partySpawnMarkers", "monstersSpawnMarkers", "battle_queue_ui", "selected_enemy_ui", "camera", "selection_manager")]
 script = ExtResource("1_ubp24")
 test_party = Array[PackedScene]([ExtResource("2_1kokq"), ExtResource("2_1kokq"), ExtResource("2_1kokq")])
-test_monsters = Array[PackedScene]([ExtResource("3_pnls4"), ExtResource("3_pnls4"), ExtResource("3_pnls4")])
+test_monsters = Array[PackedScene]([ExtResource("3_pnls4"), ExtResource("3_pnls4"), ExtResource("3_pnls4"), ExtResource("3_pnls4"), ExtResource("3_pnls4")])
 level_floor = NodePath("Floor")
 partyNode = NodePath("Party")
 monstersNode = NodePath("Monsters")
@@ -23,7 +23,6 @@ monstersSpawnMarkers = NodePath("MonstersSpawn")
 battle_queue_ui = NodePath("Battle_queue_layer/Battle_queue")
 selected_enemy_ui = NodePath("Battle_queue_layer/Selected_enemy_ui")
 camera = NodePath("Camera3D")
-selection_node = NodePath("Selection_node")
 selection_manager = NodePath("Selectons")
 
 [node name="Floor" type="MeshInstance3D" parent="."]
@@ -77,9 +76,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.1238, 0, -1.32125)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
 transform = Transform3D(1, 0, 0, 0, 0.481616, 0.876382, 0, -0.876382, 0.481616, 0, 4.78249, 1.51666)
-
-[node name="Selection_node" parent="." instance=ExtResource("5_0uw1w")]
-visible = false
 
 [node name="Selectons" type="Node3D" parent="." node_paths=PackedStringArray("monstersSpawnNode", "one_selection", "three_selection", "all_selection", "monstersNode")]
 script = ExtResource("7_h8i5x")

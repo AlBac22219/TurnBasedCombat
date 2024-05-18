@@ -20,7 +20,6 @@ signal victory
 @export var camera: Camera3D
 @export_category("Selection_node")
 @export_subgroup("Selection_node")
-@export var selection_node: Node3D
 @export var selection_manager: Node3D
 
 var action_queu: Dictionary
@@ -97,21 +96,24 @@ func select_active_char():
 			level_floor.global_position.x = queue_keys[-1].global_position.x
 			monstersSpawnMarkers.global_position.x = queue_keys[-1].global_position.x
 			selected_char = queue_keys[-1]
-			selected_char.selected_enemy = monstersNode.get_child(selected_enemy)
-			selection_node.visible = true
-			selected_enemy_ui.set_selected(selected_char.selected_enemy)
+			selection_manager.get_selected_enemies()
+			selected_enemy_ui.set_selected(selected_char.selected_enemy_arr[0])
 			selected_enemy_ui.visible = true
 			player_turn = true
 		else :
 			monstersNode.global_position.x = 0
 			level_floor.global_position.x = 0
 			monstersSpawnMarkers.global_position.x = 0
-			selection_node.visible = false
 			player_turn = false
 			selected_enemy_ui.visible = false
-		selection_node.move_to(monstersSpawnMarkers.get_child(selected_enemy))
+		selection_manager.update()
 		queue_keys[-1].select(camera)
 		await queue_keys[-1].complete_turn
+		if monstersNode.get_child_count() == 0:
+			victory.emit()
+			break
+		if partyNode.get_child_count() == 0:
+			break
 		queue_keys = move_queue(queue_keys)
 
 func move_queue(queue: Array):
@@ -132,9 +134,6 @@ func monster_died(monster: Monster):
 	action_queu.erase(monstersNode.get_child(i))
 	monstersNode.remove_child(monstersNode.get_child(i))
 	selection_manager.monster_died()
-	if selected_enemy >= monstersNode.get_child_count():
-		selected_enemy -= 1
-		move_selection()
 	if monstersNode.get_child_count()>0:
 		reposition_enemies()
 	else:
@@ -145,6 +144,6 @@ func reposition_enemies():
 		monstersNode.get_child(i).init(monstersSpawnMarkers.get_child(i))
 
 func _on_selectons_change_selected_enemies(monsters_array: Array[Monster]):
-	selected_char.selected_enemy_arr = selection_manager.get_selected_enemies()
+	selected_char.selected_enemy_arr = monsters_array
 	if monsters_array.size() == 1:
 		selected_enemy_ui.set_selected(monsters_array[0])

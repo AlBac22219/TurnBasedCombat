@@ -85,22 +85,17 @@ func _on_character_controller_attack():
 	complete_turn.emit()
 
 func _on_character_controller_skill():
-	if selected_enemy:
-		selected_enemy.attacked(character_stat.skill_damage)
-		selected_enemy = null
-		_atack_enemy(character_stat.skill_damage)
-		change_energy(character_stat.skill_energy)
-		finished_turn()
-		complete_turn.emit()
+	_atack_enemy(character_stat.skill_damage)
+	change_energy(character_stat.skill_energy)
+	finished_turn()
+	complete_turn.emit()
 
 func _on_character_controller_ultimate():
-	if selected_enemy:
-		selected_enemy.attacked(character_stat.ult_damage)
-		selected_enemy = null
-		character_controller.set_energy(0)
-		ultimate_energy = 0
-		finished_turn()
-		complete_turn.emit()
+	_atack_enemy(character_stat.ult_damage)
+	character_controller.set_energy(0)
+	ultimate_energy = 0
+	finished_turn()
+	complete_turn.emit()
 
 func change_energy(how_much_add: float):
 	character_controller.add_energy(how_much_add)

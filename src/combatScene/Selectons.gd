@@ -29,7 +29,7 @@ func _move_to(to: Marker3D):
 				i.visible = true
 			var neigborhoods_id = _get_marker_neiborhoods_id(_search_marker_id(to))
 			if neigborhoods_id.size() == 1:
-				selections_modes.ONE
+				selection_mode = selections_modes.ONE
 				_move_to(to)
 			elif neigborhoods_id.size() == 2:
 				if neigborhoods_id[0] == _search_marker_id(to):
