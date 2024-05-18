@@ -1,0 +1,35 @@
+[gd_scene load_steps=7 format=3 uid="uid://cyfs8d8me6d2e"]
+
+[ext_resource type="Script" path="res://src/combatScene/selection_node.gd" id="1_od253"]
+[ext_resource type="Shader" uid="uid://ca0npw3tatq8w" path="res://data/shaders/selection_node_base_shader.tres" id="1_u0vf2"]
+
+[sub_resource type="Gradient" id="Gradient_0ptys"]
+offsets = PackedFloat32Array(0, 0.103175, 0.230159, 0.357143, 0.5, 0.642857, 0.769841, 0.896825, 1)
+colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_3rcr7"]
+gradient = SubResource("Gradient_0ptys")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_b4kcm"]
+render_priority = 0
+shader = ExtResource("1_u0vf2")
+shader_parameter/Rim_sharpness = 3.0
+shader_parameter/Base_color = Color(8.10522e-05, 0.306622, 0.887783, 1)
+shader_parameter/Emission_amount = 9.923
+shader_parameter/Time_scale = 0.1
+shader_parameter/Texture2DParameter = SubResource("GradientTexture1D_3rcr7")
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_i8g5m"]
+resource_local_to_scene = true
+material = SubResource("ShaderMaterial_b4kcm")
+top_radius = 1.0
+bottom_radius = 1.0
+height = 1.0
+cap_top = false
+
+[node name="Selection_node" type="Node3D"]
+script = ExtResource("1_od253")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.51, 0)
+mesh = SubResource("CylinderMesh_i8g5m")

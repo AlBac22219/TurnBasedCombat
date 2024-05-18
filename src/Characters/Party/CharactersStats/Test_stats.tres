@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="character_stats" load_steps=2 format=3 uid="uid://dhj75dt7b8w2t"]
+
+[ext_resource type="Script" path="res://src/Characters/Party/CharactersStats/stats.gd" id="1_f8yqp"]
+
+[resource]
+script = ExtResource("1_f8yqp")
+character_name = "Test"
+speed = 4
+max_hp = 20
+max_ult_energy = 80.0
+attack_energy = 7.5
+skill_energy = 20.0
+attack_damage = 8.0
+skill_damage = 12.0
+ult_damage = 50.0

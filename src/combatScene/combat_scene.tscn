@@ -1,0 +1,116 @@
+[gd_scene load_steps=9 format=3 uid="uid://dkt283h2dnmh7"]
+
+[ext_resource type="Script" path="res://src/combatScene/combat_scene.gd" id="1_ubp24"]
+[ext_resource type="PackedScene" uid="uid://c8u8wtc2ums0r" path="res://src/Characters/Party/character.tscn" id="2_1kokq"]
+[ext_resource type="PackedScene" uid="uid://cdy88kyfdu2c6" path="res://src/Characters/Monsters/monster.tscn" id="3_pnls4"]
+[ext_resource type="PackedScene" uid="uid://dc7niqwfku1ae" path="res://src/combatScene/battle_queue.tscn" id="4_32012"]
+[ext_resource type="PackedScene" uid="uid://cyfs8d8me6d2e" path="res://src/combatScene/selection_node.tscn" id="5_0uw1w"]
+[ext_resource type="PackedScene" uid="uid://dexr8uppfbgn1" path="res://src/combatScene/selected_enemy_ui.tscn" id="5_tqrgn"]
+[ext_resource type="Script" path="res://src/combatScene/Selectons.gd" id="7_h8i5x"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_74ydg"]
+size = Vector2(20, 20)
+
+[node name="CombatScene" type="Node3D" node_paths=PackedStringArray("level_floor", "partyNode", "monstersNode", "partySpawnMarkers", "monstersSpawnMarkers", "battle_queue_ui", "selected_enemy_ui", "camera", "selection_node", "selection_manager")]
+script = ExtResource("1_ubp24")
+test_party = Array[PackedScene]([ExtResource("2_1kokq"), ExtResource("2_1kokq"), ExtResource("2_1kokq")])
+test_monsters = Array[PackedScene]([ExtResource("3_pnls4"), ExtResource("3_pnls4"), ExtResource("3_pnls4")])
+level_floor = NodePath("Floor")
+partyNode = NodePath("Party")
+monstersNode = NodePath("Monsters")
+partySpawnMarkers = NodePath("PartySpawn")
+monstersSpawnMarkers = NodePath("MonstersSpawn")
+battle_queue_ui = NodePath("Battle_queue_layer/Battle_queue")
+selected_enemy_ui = NodePath("Battle_queue_layer/Selected_enemy_ui")
+camera = NodePath("Camera3D")
+selection_node = NodePath("Selection_node")
+selection_manager = NodePath("Selectons")
+
+[node name="Floor" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_74ydg")
+skeleton = NodePath("")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.881527, 0.12915, 0.454126, 0.00246475, 0.960587, -0.277969, -0.472127, 0.246156, 0.846465, 0, 0, 0)
+fov = 59.9076
+
+[node name="PartySpawn" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.984255)
+
+[node name="First" type="Marker3D" parent="PartySpawn"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.755, 0, 4.728)
+
+[node name="Second" type="Marker3D" parent="PartySpawn"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.059, 0, 3.977)
+
+[node name="Thirst" type="Marker3D" parent="PartySpawn"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.789, 0, 2.928)
+
+[node name="MonstersSpawn" type="Node3D" parent="."]
+
+[node name="First" type="Marker3D" parent="MonstersSpawn"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.06665, 0, -1.65893)
+
+[node name="Second" type="Marker3D" parent="MonstersSpawn"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.79771, 0, -1.76806)
+
+[node name="Thirst" type="Marker3D" parent="MonstersSpawn"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.369119, 0, -1.68893)
+
+[node name="Four" type="Marker3D" parent="MonstersSpawn"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.18537, 0, -1.25968)
+
+[node name="Five" type="Marker3D" parent="MonstersSpawn"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.1238, 0, -1.32125)
+
+[node name="Party" type="Node3D" parent="."]
+
+[node name="Monsters" type="Node3D" parent="."]
+
+[node name="Battle_queue_layer" type="CanvasLayer" parent="."]
+
+[node name="Battle_queue" parent="Battle_queue_layer" instance=ExtResource("4_32012")]
+
+[node name="Selected_enemy_ui" parent="Battle_queue_layer" instance=ExtResource("5_tqrgn")]
+
+[node name="Environment" type="Node3D" parent="."]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 0.481616, 0.876382, 0, -0.876382, 0.481616, 0, 4.78249, 1.51666)
+
+[node name="Selection_node" parent="." instance=ExtResource("5_0uw1w")]
+visible = false
+
+[node name="Selectons" type="Node3D" parent="." node_paths=PackedStringArray("monstersSpawnNode", "one_selection", "three_selection", "all_selection", "monstersNode")]
+script = ExtResource("7_h8i5x")
+monstersSpawnNode = NodePath("../MonstersSpawn")
+one_selection = NodePath("One_select")
+three_selection = NodePath("Three_select")
+all_selection = NodePath("All_select")
+monstersNode = NodePath("../Monsters")
+
+[node name="One_select" type="Node3D" parent="Selectons"]
+
+[node name="Selection_node" parent="Selectons/One_select" instance=ExtResource("5_0uw1w")]
+
+[node name="Three_select" type="Node3D" parent="Selectons"]
+
+[node name="Selection_node" parent="Selectons/Three_select" instance=ExtResource("5_0uw1w")]
+
+[node name="Selection_node2" parent="Selectons/Three_select" instance=ExtResource("5_0uw1w")]
+
+[node name="Selection_node3" parent="Selectons/Three_select" instance=ExtResource("5_0uw1w")]
+
+[node name="All_select" type="Node3D" parent="Selectons"]
+
+[node name="Selection_node" parent="Selectons/All_select" instance=ExtResource("5_0uw1w")]
+
+[node name="Selection_node2" parent="Selectons/All_select" instance=ExtResource("5_0uw1w")]
+
+[node name="Selection_node3" parent="Selectons/All_select" instance=ExtResource("5_0uw1w")]
+
+[node name="Selection_node4" parent="Selectons/All_select" instance=ExtResource("5_0uw1w")]
+
+[node name="Selection_node5" parent="Selectons/All_select" instance=ExtResource("5_0uw1w")]
+
+[connection signal="change_selected_enemies" from="Selectons" to="." method="_on_selectons_change_selected_enemies"]

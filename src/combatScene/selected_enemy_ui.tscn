@@ -1,0 +1,109 @@
+[gd_scene load_steps=3 format=3 uid="uid://dexr8uppfbgn1"]
+
+[ext_resource type="Script" path="res://src/combatScene/selected_enemy_ui.gd" id="1_ev7lh"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_d7sve"]
+font_size = 24
+
+[node name="Selected_enemy_ui" type="Control" node_paths=PackedStringArray("enemy_icon", "enemy_hp_bar", "max_hp_label", "hp_label", "enemy_name_label", "enemy_status_grid_container")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_ev7lh")
+enemy_icon = NodePath("Panel/ColorRect/TextureRect")
+enemy_hp_bar = NodePath("Panel/EnemyHPBar")
+max_hp_label = NodePath("Panel/EnemyHPBar/Max_hp_label")
+hp_label = NodePath("Panel/EnemyHPBar/HP_label")
+enemy_name_label = NodePath("Panel/Enemy_name_label")
+enemy_status_grid_container = NodePath("Panel/GridContainer")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -430.0
+offset_bottom = 133.0
+grow_horizontal = 0
+
+[node name="ColorRect" type="ColorRect" parent="Panel"]
+custom_minimum_size = Vector2(132, 132)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -132.0
+offset_bottom = 132.0
+grow_horizontal = 0
+color = Color(0.860369, 0.860369, 0.860369, 1)
+
+[node name="TextureRect" type="TextureRect" parent="Panel/ColorRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 5
+
+[node name="EnemyHPBar" type="ProgressBar" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.414
+anchor_right = 0.693
+anchor_bottom = 0.632
+offset_top = -0.0620041
+offset_right = 0.00997925
+offset_bottom = -0.0560074
+grow_horizontal = 2
+grow_vertical = 2
+fill_mode = 1
+show_percentage = false
+
+[node name="Max_hp_label" type="Label" parent="Panel/EnemyHPBar"]
+custom_minimum_size = Vector2(29, 29)
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.034
+anchor_right = 0.097
+anchor_bottom = 1.0
+offset_top = 0.0139999
+offset_right = 0.0939999
+offset_bottom = 1.0
+grow_vertical = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HP_label" type="Label" parent="Panel/EnemyHPBar"]
+custom_minimum_size = Vector2(29, 29)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.903
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -0.0940247
+grow_horizontal = 0
+grow_vertical = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="Panel"]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 86.0
+offset_right = 298.0
+offset_bottom = 133.0
+columns = 10
+
+[node name="Enemy_name_label" type="Label" parent="Panel"]
+layout_mode = 0
+offset_right = 298.0
+offset_bottom = 56.0
+text = "Test_label"
+label_settings = SubResource("LabelSettings_d7sve")
+horizontal_alignment = 1
+vertical_alignment = 1

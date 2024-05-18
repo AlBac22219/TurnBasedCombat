@@ -1,0 +1,38 @@
+[gd_scene load_steps=7 format=3 uid="uid://cdy88kyfdu2c6"]
+
+[ext_resource type="Script" path="res://src/Characters/Monsters/monster.gd" id="1_xkkjk"]
+[ext_resource type="Resource" uid="uid://dqd23d6t4mjkr" path="res://src/Characters/Monsters/stats/Bubble.tres" id="2_jjuqa"]
+[ext_resource type="Texture2D" uid="uid://dycth32xckjbo" path="res://enemy.png" id="3_bj3lk"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_skjsr"]
+height = 1.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_13g2f"]
+size = Vector3(0.25, 0.25, 0.25)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_oa771"]
+albedo_color = Color(0, 0, 0, 1)
+
+[node name="monster" type="Marker3D" node_paths=PackedStringArray("camera_marker", "test_timer")]
+script = ExtResource("1_xkkjk")
+character_stat = ExtResource("2_jjuqa")
+camera_marker = NodePath("Camera_marker")
+test_timer = NodePath("Timer")
+iconTexture = ExtResource("3_bj3lk")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = SubResource("CapsuleMesh_skjsr")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.968827, 0.321057)
+mesh = SubResource("BoxMesh_13g2f")
+surface_material_override/0 = SubResource("StandardMaterial3D_oa771")
+
+[node name="Camera_marker" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.12284, 0.277863, 2.26447)
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

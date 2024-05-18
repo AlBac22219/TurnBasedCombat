@@ -1,0 +1,143 @@
+[gd_scene load_steps=6 format=3 uid="uid://c8o2451dm4exo"]
+
+[ext_resource type="Script" path="res://src/Characters/Party/character_controller.gd" id="1_c28yt"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_qmyl1"]
+particle_flag_disable_z = true
+direction = Vector3(0, 0, 0)
+spread = 24.775
+flatness = 0.09
+initial_velocity_min = 168.54
+initial_velocity_max = 179.78
+angular_velocity_max = 161.8
+orbit_velocity_min = -0.18
+orbit_velocity_max = 0.045
+gravity = Vector3(0, 0, 0)
+
+[sub_resource type="Gradient" id="Gradient_b06pw"]
+offsets = PackedFloat32Array(0, 0.428571, 0.597403)
+colors = PackedColorArray(1, 1, 1, 0.796078, 1, 1, 1, 0.796078, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_637ry"]
+gradient = SubResource("Gradient_b06pw")
+width = 8
+height = 8
+fill = 1
+fill_from = Vector2(0.481651, 0.481651)
+fill_to = Vector2(0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_juywi"]
+font_size = 128
+
+[node name="character_controller" type="Control" node_paths=PackedStringArray("icon", "ultimate_skill_button", "skill_button", "attack_button", "ultimate_progress_bar", "ultimate_particles", "name_label")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_c28yt")
+icon = NodePath("Character_icon")
+ultimate_skill_button = NodePath("Character_icon/Ultimate_progress_bar/Ultimate_skill_button")
+skill_button = NodePath("Skill_button")
+attack_button = NodePath("Attack_button")
+ultimate_progress_bar = NodePath("Character_icon/Ultimate_progress_bar")
+ultimate_particles = NodePath("Character_icon/Ultimate_progress_bar/Skill_particles")
+name_label = NodePath("Character_icon/Label")
+
+[node name="Character_icon" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(212, 212)
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -212.0
+offset_right = 212.0
+grow_vertical = 0
+
+[node name="Ultimate_progress_bar" type="ProgressBar" parent="Character_icon"]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 125.0
+offset_top = 79.0
+offset_right = 253.0
+offset_bottom = 207.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -1.5708
+show_percentage = false
+
+[node name="Skill_particles" type="GPUParticles2D" parent="Character_icon/Ultimate_progress_bar"]
+position = Vector2(64, 64)
+amount = 100
+process_material = SubResource("ParticleProcessMaterial_qmyl1")
+texture = SubResource("GradientTexture2D_637ry")
+lifetime = 0.8
+
+[node name="Ultimate_skill_button" type="TextureButton" parent="Character_icon/Ultimate_progress_bar"]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 129.0
+offset_right = 129.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 1.5708
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="Character_icon"]
+layout_mode = 0
+offset_left = 223.0
+offset_top = -14.0
+offset_right = 597.0
+offset_bottom = 161.0
+scale = Vector2(0.4, 0.4)
+text = "NAME"
+label_settings = SubResource("LabelSettings_juywi")
+
+[node name="Skill_button" type="TextureButton" parent="."]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -159.0
+offset_top = -257.0
+offset_right = -31.0
+offset_bottom = -129.0
+grow_horizontal = 0
+grow_vertical = 0
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Attack_button" type="TextureButton" parent="."]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -399.0
+offset_top = -173.0
+offset_right = -271.0
+offset_bottom = -45.0
+grow_horizontal = 0
+grow_vertical = 0
+ignore_texture_size = true
+stretch_mode = 0
+
+[connection signal="pressed" from="Character_icon/Ultimate_progress_bar/Ultimate_skill_button" to="." method="_on_ultimate_skill_button_pressed"]
+[connection signal="pressed" from="Skill_button" to="." method="_on_skill_button_pressed"]
+[connection signal="pressed" from="Attack_button" to="." method="_on_attack_button_pressed"]
