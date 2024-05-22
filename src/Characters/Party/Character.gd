@@ -15,6 +15,8 @@ signal change_state(state: buttons_states)
 
 enum buttons_states {ATACK, SKILL, ULT, NULL}
 
+@onready var hp: float = character_stat.max_hp
+var shield: float
 var last_button: buttons_states = buttons_states.NULL
 var selected_enemy: Monster = null
 var selected_enemy_arr: Array[Monster] = []
@@ -113,8 +115,8 @@ func _on_character_controller_ultimate():
 		finished_turn()
 		complete_turn.emit()
 	else:
-		last_button = buttons_states.SKILL
-		emit_signal("change_state", buttons_states.SKILL)
+		last_button = buttons_states.ULT
+		emit_signal("change_state", buttons_states.ULT)
 
 func change_energy(how_much_add: float):
 	character_controller.add_energy(how_much_add)

@@ -1,0 +1,168 @@
+[gd_scene load_steps=11 format=3 uid="uid://bespydqnn0an1"]
+
+[ext_resource type="Texture2D" uid="uid://enrpllqktj74" path="res://icon.svg" id="1_42pfv"]
+[ext_resource type="Script" path="res://src/ui/character_stats.gd" id="1_a8sqc"]
+[ext_resource type="Shader" uid="uid://dakt4dwlyqtwx" path="res://data/shaders/character_stats.tres" id="3_f338s"]
+[ext_resource type="Texture2D" uid="uid://ufxus271r2ne" path="res://data/textures/characters/skills/test_sharcter/ultimate_skill_on.png" id="4_ykvs5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hcem8"]
+bg_color = Color(0.923264, 0, 0.136257, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.792526, 0.123421, 2.88785e-07, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+expand_margin_right = 1.0
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xupho"]
+bg_color = Color(0.142476, 0.779241, 0, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(6.06447e-06, 0.944844, 0.626965, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+expand_margin_right = 1.0
+anti_aliasing = false
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ysnmb"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_job4w"]
+bg_color = Color(1, 1, 1, 0.607843)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.690196, 0.690196, 0.690196, 0.607843)
+border_blend = true
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+expand_margin_left = 1.0
+expand_margin_top = 1.0
+expand_margin_right = 1.0
+expand_margin_bottom = 1.0
+anti_aliasing = false
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_akt1m"]
+resource_local_to_scene = true
+shader = ExtResource("3_f338s")
+shader_parameter/On_color = Color(1, 1, 1, 1)
+shader_parameter/Off_color = Color(0.831084, 0.844942, 0.817321, 1)
+shader_parameter/Time_scale = 3.0
+shader_parameter/Enable = false
+
+[sub_resource type="LabelSettings" id="LabelSettings_xiifj"]
+font_size = 18
+
+[node name="Character_stats" type="Control" node_paths=PackedStringArray("hp_bar", "shieldBar", "ultBar", "ult_icon", "name_label", "char_icon")]
+custom_minimum_size = Vector2(282, 127)
+layout_mode = 3
+anchor_right = 0.147
+anchor_bottom = 0.118
+offset_right = -0.23999
+offset_bottom = -0.44001
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_a8sqc")
+hp_bar = NodePath("HBoxContainer/Panel/Control/HPBar")
+shieldBar = NodePath("HBoxContainer/Panel/Control/ShieldBar")
+ultBar = NodePath("HBoxContainer/Panel/Control/UltBar")
+ult_icon = NodePath("HBoxContainer/Panel/Control/UltBar/TextureRect")
+name_label = NodePath("HBoxContainer/Panel/Control/Name")
+char_icon = NodePath("HBoxContainer/TextureRect")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer"]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+texture = ExtResource("1_42pfv")
+expand_mode = 5
+
+[node name="Panel" type="Panel" parent="HBoxContainer"]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+
+[node name="Control" type="Control" parent="HBoxContainer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HPBar" type="ProgressBar" parent="HBoxContainer/Panel/Control"]
+custom_minimum_size = Vector2(128, 36)
+layout_mode = 0
+offset_left = -2.0
+offset_top = 26.0
+offset_right = 126.0
+offset_bottom = 62.0
+theme_override_styles/background = SubResource("StyleBoxFlat_hcem8")
+theme_override_styles/fill = SubResource("StyleBoxFlat_xupho")
+value = 50.0
+show_percentage = false
+
+[node name="ShieldBar" type="ProgressBar" parent="HBoxContainer/Panel/Control"]
+custom_minimum_size = Vector2(128, 36)
+layout_mode = 0
+offset_left = -2.0
+offset_top = 26.0
+offset_right = 126.0
+offset_bottom = 62.0
+theme_override_styles/background = SubResource("StyleBoxEmpty_ysnmb")
+theme_override_styles/fill = SubResource("StyleBoxFlat_job4w")
+max_value = 1.0
+show_percentage = false
+
+[node name="UltBar" type="ProgressBar" parent="HBoxContainer/Panel/Control"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.43
+anchor_bottom = 0.93
+offset_left = -1.0
+offset_top = 72.96
+offset_right = 63.0
+offset_bottom = 72.96
+grow_horizontal = 2
+grow_vertical = 0
+rotation = -1.5708
+value = 50.0
+show_percentage = false
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/Panel/Control/UltBar"]
+material = SubResource("ShaderMaterial_akt1m")
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 64.0
+offset_right = 64.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 1.5708
+mouse_filter = 2
+texture = ExtResource("4_ykvs5")
+expand_mode = 5
+
+[node name="Name" type="Label" parent="HBoxContainer/Panel/Control"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Text"
+label_settings = SubResource("LabelSettings_xiifj")

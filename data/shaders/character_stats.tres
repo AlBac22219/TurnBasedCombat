@@ -1,0 +1,137 @@
+[gd_resource type="VisualShader" load_steps=13 format=3 uid="uid://dakt4dwlyqtwx"]
+
+[sub_resource type="VisualShaderNodeVectorOp" id="VisualShaderNodeVectorOp_6occ4"]
+default_input_values = [0, Quaternion(0, 0, 0, 0), 1, Quaternion(0, 0, 0, 0)]
+op_type = 2
+operator = 2
+
+[sub_resource type="VisualShaderNodeVectorOp" id="VisualShaderNodeVectorOp_2oj4g"]
+default_input_values = [0, Quaternion(0, 0, 0, 0), 1, Quaternion(0, 0, 0, 0)]
+op_type = 2
+operator = 2
+
+[sub_resource type="VisualShaderNodeFloatFunc" id="VisualShaderNodeFloatFunc_tcf0d"]
+function = 0
+
+[sub_resource type="VisualShaderNodeFloatFunc" id="VisualShaderNodeFloatFunc_7d71d"]
+function = 12
+
+[sub_resource type="VisualShaderNodeFloatOp" id="VisualShaderNodeFloatOp_qwi4v"]
+default_input_values = [0, 0.0, 1, 0.8]
+
+[sub_resource type="VisualShaderNodeColorParameter" id="VisualShaderNodeColorParameter_eqqye"]
+parameter_name = "On_color"
+
+[sub_resource type="VisualShaderNodeColorParameter" id="VisualShaderNodeColorParameter_0sc15"]
+parameter_name = "Off_color"
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_1bo0m"]
+input_name = "time"
+
+[sub_resource type="VisualShaderNodeFloatParameter" id="VisualShaderNodeFloatParameter_1yya2"]
+parameter_name = "Time_scale"
+
+[sub_resource type="VisualShaderNodeBooleanParameter" id="VisualShaderNodeBooleanParameter_xtidp"]
+parameter_name = "Enable"
+
+[sub_resource type="VisualShaderNodeFloatOp" id="VisualShaderNodeFloatOp_3wjok"]
+operator = 2
+
+[sub_resource type="VisualShaderNodeFloatOp" id="VisualShaderNodeFloatOp_1p407"]
+operator = 2
+
+[resource]
+code = "shader_type canvas_item;
+render_mode blend_mix;
+
+uniform vec4 On_color : source_color;
+uniform vec4 Off_color : source_color;
+uniform float Time_scale;
+uniform bool Enable;
+
+
+
+void fragment() {
+// ColorParameter:2
+	vec4 n_out2p0 = On_color;
+
+
+// ColorParameter:3
+	vec4 n_out3p0 = Off_color;
+
+
+// VectorOp:10
+	vec4 n_out10p0 = n_out2p0 * n_out3p0;
+
+
+// Input:5
+	float n_out5p0 = TIME;
+
+
+// FloatParameter:6
+	float n_out6p0 = Time_scale;
+
+
+// FloatOp:8
+	float n_out8p0 = n_out5p0 * n_out6p0;
+
+
+// BooleanParameter:7
+	bool n_out7p0 = Enable;
+
+
+// FloatOp:9
+	float n_out9p0 = n_out8p0 * (n_out7p0 ? 1.0 : 0.0);
+
+
+// FloatFunc:12
+	float n_out12p0 = sin(n_out9p0);
+
+
+// FloatFunc:13
+	float n_out13p0 = abs(n_out12p0);
+
+
+// FloatOp:14
+	float n_in14p1 = 0.80000;
+	float n_out14p0 = n_out13p0 + n_in14p1;
+
+
+// VectorOp:11
+	vec4 n_out11p0 = n_out10p0 * vec4(n_out14p0);
+
+
+// Output:0
+	COLOR.rgb = vec3(n_out11p0.xyz);
+
+
+}
+"
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2(840, -40)
+nodes/fragment/2/node = SubResource("VisualShaderNodeColorParameter_eqqye")
+nodes/fragment/2/position = Vector2(-420, -140)
+nodes/fragment/3/node = SubResource("VisualShaderNodeColorParameter_0sc15")
+nodes/fragment/3/position = Vector2(-420, 20)
+nodes/fragment/5/node = SubResource("VisualShaderNodeInput_1bo0m")
+nodes/fragment/5/position = Vector2(-740, 240)
+nodes/fragment/6/node = SubResource("VisualShaderNodeFloatParameter_1yya2")
+nodes/fragment/6/position = Vector2(-720, 320)
+nodes/fragment/7/node = SubResource("VisualShaderNodeBooleanParameter_xtidp")
+nodes/fragment/7/position = Vector2(-740, 520)
+nodes/fragment/8/node = SubResource("VisualShaderNodeFloatOp_3wjok")
+nodes/fragment/8/position = Vector2(-400, 260)
+nodes/fragment/9/node = SubResource("VisualShaderNodeFloatOp_1p407")
+nodes/fragment/9/position = Vector2(-180, 260)
+nodes/fragment/10/node = SubResource("VisualShaderNodeVectorOp_6occ4")
+nodes/fragment/10/position = Vector2(-40, -80)
+nodes/fragment/11/node = SubResource("VisualShaderNodeVectorOp_2oj4g")
+nodes/fragment/11/position = Vector2(560, -80)
+nodes/fragment/12/node = SubResource("VisualShaderNodeFloatFunc_tcf0d")
+nodes/fragment/12/position = Vector2(0, 280)
+nodes/fragment/13/node = SubResource("VisualShaderNodeFloatFunc_7d71d")
+nodes/fragment/13/position = Vector2(180, 280)
+nodes/fragment/14/node = SubResource("VisualShaderNodeFloatOp_qwi4v")
+nodes/fragment/14/position = Vector2(360, 240)
+nodes/fragment/connections = PackedInt32Array(5, 0, 8, 0, 6, 0, 8, 1, 8, 0, 9, 0, 7, 0, 9, 1, 2, 0, 10, 0, 3, 0, 10, 1, 10, 0, 11, 0, 11, 0, 0, 0, 9, 0, 12, 0, 12, 0, 13, 0, 13, 0, 14, 0, 14, 0, 11, 1)

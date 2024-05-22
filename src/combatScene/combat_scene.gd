@@ -16,6 +16,7 @@ signal victory
 @export_category("UI")
 @export_subgroup("UI")
 @export var battle_queue_ui: Control
+@export var party_stats: Control
 @export var camera: Camera3D
 @export_category("Selection_node")
 @export_subgroup("Selection_node")
@@ -41,6 +42,7 @@ func init(party: Array[PackedScene], monsters: Array[PackedScene]):
 			character.init(party_spawn_markers[i])
 			character.connect("change_state", _change_selection_mode)
 			partyNode.add_child(character)
+	party_stats.init(partyNode.get_children())
 	if monsters.size()>0:
 		for i in range(monsters.size()):
 			var monster_inst = monsters[i]
@@ -99,8 +101,6 @@ func select_active_char():
 			selection_manager.get_selected_enemies()
 			selection_manager.change_ui_visibiliti(true)
 			_change_selection_mode(selected_char.last_button)
-			#selected_enemy_ui.set_selected(selected_char.selected_enemy_arr[0])
-			#selected_enemy_ui.visible = true
 			player_turn = true
 		else :
 			monstersNode.global_position.x = 0
@@ -108,10 +108,10 @@ func select_active_char():
 			monstersSpawnMarkers.global_position.x = 0
 			player_turn = false
 			selection_manager.change_ui_visibiliti(false)
-			#selected_enemy_ui.visible = false
 		selection_manager.update()
 		queue_keys[-1].select(camera)
 		await queue_keys[-1].complete_turn
+		party_stats.update(partyNode.get_children())
 		if monstersNode.get_child_count() == 0:
 			victory.emit()
 			break

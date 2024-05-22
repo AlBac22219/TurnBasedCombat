@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dkt283h2dnmh7"]
+[gd_scene load_steps=10 format=3 uid="uid://dkt283h2dnmh7"]
 
 [ext_resource type="Script" path="res://src/combatScene/combat_scene.gd" id="1_ubp24"]
 [ext_resource type="PackedScene" uid="uid://c8u8wtc2ums0r" path="res://src/Characters/Party/character.tscn" id="2_1kokq"]
@@ -6,12 +6,13 @@
 [ext_resource type="PackedScene" uid="uid://dc7niqwfku1ae" path="res://src/combatScene/battle_queue.tscn" id="4_32012"]
 [ext_resource type="PackedScene" uid="uid://cyfs8d8me6d2e" path="res://src/combatScene/selection_node.tscn" id="5_0uw1w"]
 [ext_resource type="PackedScene" uid="uid://dexr8uppfbgn1" path="res://src/combatScene/selected_enemy_ui.tscn" id="5_tqrgn"]
+[ext_resource type="PackedScene" uid="uid://c0ku16ni7c5qq" path="res://src/ui/party_stats.tscn" id="6_7eoe2"]
 [ext_resource type="Script" path="res://src/combatScene/Selectons.gd" id="7_h8i5x"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_74ydg"]
 size = Vector2(20, 20)
 
-[node name="CombatScene" type="Node3D" node_paths=PackedStringArray("level_floor", "partyNode", "monstersNode", "partySpawnMarkers", "monstersSpawnMarkers", "battle_queue_ui", "camera", "selection_manager")]
+[node name="CombatScene" type="Node3D" node_paths=PackedStringArray("level_floor", "partyNode", "monstersNode", "partySpawnMarkers", "monstersSpawnMarkers", "battle_queue_ui", "party_stats", "camera", "selection_manager")]
 script = ExtResource("1_ubp24")
 test_party = Array[PackedScene]([ExtResource("2_1kokq"), ExtResource("2_1kokq"), ExtResource("2_1kokq")])
 test_monsters = Array[PackedScene]([ExtResource("3_pnls4"), ExtResource("3_pnls4"), ExtResource("3_pnls4"), ExtResource("3_pnls4"), ExtResource("3_pnls4")])
@@ -21,6 +22,7 @@ monstersNode = NodePath("Monsters")
 partySpawnMarkers = NodePath("PartySpawn")
 monstersSpawnMarkers = NodePath("MonstersSpawn")
 battle_queue_ui = NodePath("Battle_queue_layer/Battle_queue")
+party_stats = NodePath("Battle_queue_layer/Party_stats")
 camera = NodePath("Camera3D")
 selection_manager = NodePath("Selectons")
 
@@ -71,10 +73,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.1238, 0, -1.32125)
 
 [node name="Selected_enemy_ui" parent="Battle_queue_layer" instance=ExtResource("5_tqrgn")]
 
+[node name="Party_stats" parent="Battle_queue_layer" instance=ExtResource("6_7eoe2")]
+
 [node name="Environment" type="Node3D" parent="."]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
 transform = Transform3D(1, 0, 0, 0, 0.481616, 0.876382, 0, -0.876382, 0.481616, 0, 4.78249, 1.51666)
+directional_shadow_mode = 0
 
 [node name="Selectons" type="Node3D" parent="." node_paths=PackedStringArray("monstersSpawnNode", "monstersNode", "one_selection", "three_selection", "all_selection", "selected_enemy_ui")]
 script = ExtResource("7_h8i5x")
